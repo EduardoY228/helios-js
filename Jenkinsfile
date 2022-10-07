@@ -19,7 +19,7 @@ pipeline {
        stage("run") {
             steps {
                 sh """
-                        lsof -t -i tcp:3034 -s tcp:listen | xargs kill
+                        kill $(lsof -t -i:3034)
                         docker run -d -p3034:3034 ses-monitoring-js
                   """
             }

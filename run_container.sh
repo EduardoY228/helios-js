@@ -6,7 +6,7 @@ if [ -z "$container" ]
   then
       echo "helios-js container not running"
       echo "starting container..."
-      docker run -d -rm --name helios-js -p3034:3034 ses-monitoring-js
+      docker run -d --rm --name helios-js -p3034:3034 ses-monitoring-js
   else
       echo "helios-js container running, id: $container"
       echo "stop docker container"

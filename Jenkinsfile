@@ -19,8 +19,7 @@ pipeline {
        stage("run") {
             steps {
                 sh """
-                        npx kill-port 3034
-                        docker run -d -p3034:3034 ses-monitoring-js
+                      sh ./run_container.sh
                   """
             }
        }

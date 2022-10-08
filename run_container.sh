@@ -1,16 +1,18 @@
 #!/bin/bash
 
-container=$(docker ps | grep 'helios-js' | awk '{ print $1 }')
+container=$(docker ps -a | grep 'helios-js' | awk '{ print $1 }')
 
 if [ -z "$container" ]
   then
-      echo "ses-monitoring-js container not running"
+      echo "helios-js container not running"
       echo "starting container..."
       docker run -d --name helios-js -p3034:3034 ses-monitoring-js
   else
-      echo "ses-monitoring-js container running, id: $container"
-      echo "rerun docker container"
+      echo "helios-js container running, id: $container"
+      echo "stop docker container"
       docker stop $container
-      echo "starting container..."
+      echo "remove docker container"
+      docker rm helios-js
+      echo "starting new container..."
       docker run -d --name helios-js -p3034:3034 ses-monitoring-js
 fi

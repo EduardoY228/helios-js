@@ -30,7 +30,7 @@ async function bootstrap() {
   );
 
   await app.listen(port, () => {
-    Logger.log(`App start with profile: ${process.env.NODE_ENV}`, 'START')
+    Logger.log(`App start with profile: ${process.env.NODE_ENV}`, 'START');
     Logger.log(`App start in port ${port}`, 'START');
   });
 }

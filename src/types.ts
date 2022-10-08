@@ -47,5 +47,3 @@ type Day =
 
 export type TimeStampDay =
   `${number}${number}${number}${number}-${Month}-${Day}`;
-
-const t: TimeStampDay = '2002-11-1';

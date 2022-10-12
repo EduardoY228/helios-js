@@ -6,6 +6,7 @@ import { AppModule } from './app.module';
 import * as morgan from 'morgan';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NoDataFoundExceptionFilter } from '@/exception/no-data-found-exception.filter';
+import { RequestIdInterceptor } from '@/interceptor/request-id.interceptor';
 
 async function bootstrap() {
   const app: NestExpressApplication = await NestFactory.create(AppModule);
@@ -23,6 +24,7 @@ async function bootstrap() {
 
   SwaggerModule.setup('api/doc', app, document);
 
+  app.useGlobalInterceptors(new RequestIdInterceptor());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useGlobalFilters(new NoDataFoundExceptionFilter());
   app.use(

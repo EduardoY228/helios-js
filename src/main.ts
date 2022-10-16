@@ -7,9 +7,13 @@ import * as morgan from 'morgan';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NoDataFoundExceptionFilter } from '@/exception/no-data-found-exception.filter';
 import { RequestIdInterceptor } from '@/interceptor/request-id.interceptor';
+import { WinstonModule } from 'nest-winston';
+import { loggerOptions } from '@/logger';
 
 async function bootstrap() {
-  const app: NestExpressApplication = await NestFactory.create(AppModule);
+  const app: NestExpressApplication = await NestFactory.create(AppModule, {
+    logger: WinstonModule.createLogger(loggerOptions),
+  });
   const config: ConfigService = app.get(ConfigService);
   const port: number = config.get<number>('PORT');
 
@@ -20,6 +24,7 @@ async function bootstrap() {
     .addTag('Helios')
     .addBearerAuth()
     .build();
+
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
   SwaggerModule.setup('api/doc', app, document);
@@ -28,7 +33,16 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useGlobalFilters(new NoDataFoundExceptionFilter());
   app.use(
-    morgan(':method :url :status :res[content-length] - :response-time ms'),
+    morgan(
+      ':remote-addr :method :url :status :res[content-length] b - :response-time ms',
+      {
+        stream: {
+          write: (text: string) => {
+            Logger.log(text);
+          },
+        },
+      },
+    ),
   );
 
   await app.listen(port, () => {

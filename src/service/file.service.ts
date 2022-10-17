@@ -34,7 +34,7 @@ export class FileService {
     return this.httpService
       .post<FileServerResponseDto>(`/uploadFile`, formData, {
         headers: {
-          Authorization: token.substring(7, token.length),
+          Authorization: token,
           'Content-Type': 'multipart/form-data',
         },
       })

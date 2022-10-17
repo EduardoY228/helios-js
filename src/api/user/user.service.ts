@@ -60,7 +60,7 @@ export class UserService {
     payload: UserUpdateRequestDto | UserProfileUpdateRequestDto,
     token: string,
   ) {
-    Logger.log('UserService update', payload);
+    Logger.log('UserService update', omit(payload, 'avatar'));
 
     let avatarUrl: string;
 
